@@ -1,10 +1,12 @@
 package com.conu.findhelp.models;
 
 
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("manager")
+@Data
 public class Manager {
 
     private String username;

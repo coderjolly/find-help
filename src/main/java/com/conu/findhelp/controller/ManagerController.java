@@ -5,6 +5,7 @@ import com.conu.findhelp.repositories.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,9 @@ public class ManagerController {
 
     @GetMapping("/testApi")
     public ResponseEntity<List<Manager>> testApi() {
-        return ResponseEntity.status(HttpStatus.OK).body(managerRepository.findAll());
+
+        return new ResponseEntity<>(managerRepository.findAll(),null,HttpStatus.CREATED);
+
     }
 
 }
