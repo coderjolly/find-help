@@ -10,10 +10,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories
 public class FindhelpApplication {
 
-
-	@Autowired
-	ManagerRepository groceryItemRepo;
-
 	public static void main(String[] args) {
 		SpringApplication.run(FindhelpApplication.class, args);
 	}
