@@ -8,7 +8,11 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
+import java.util.List;
 
 @Document("manager")
 @Data
@@ -29,6 +33,26 @@ public class FindHelpUser {
     private String phone;
     private String registrationNo;
     private STATUS status;
+
+    private boolean isAssessmentTaken;
+
+    private boolean isCounsellingDone;
+
+    private List<String> assessmentOptionsSelected;
+
+    private String OTP;
+
+    private Integer verificationAttempts;
+
+    private Date otpExpiryDate;
+
+    private List<String> patientQueue;
+
+    private String counsellorAssigned;
+
+    private String doctorAssigned;
+
+    private String counsellingResult;
 
     public FindHelpUser(String email, String password, String name, String dob, String phone, String address, String role) {
         this.email = email;

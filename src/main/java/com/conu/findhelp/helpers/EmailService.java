@@ -11,8 +11,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public String sendSimpleMail(String toUser,String subject,String body)
-    {
+    public boolean sendSimpleMail(String toUser,String subject,String body)  {
 
         // Try block to check for exceptions
         try {
@@ -26,12 +25,12 @@ public class EmailService {
 
             // Sending the mail
             javaMailSender.send(mailMessage);
-            return "Mail Sent Successfully...";
+            return true;
         }
 
         // Catch block to handle the exceptions
         catch (Exception e) {
-            return "Error while Sending Mail";
+            return false;
         }
     }
 }

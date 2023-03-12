@@ -25,5 +25,8 @@ public interface UserRepository extends MongoRepository<FindHelpUser, String> {
     @Query("{id:'?0'}")
     FindHelpUser findUserById(String id);
 
+    @Query("{'email' : { $in : ?0}}")
+    List<FindHelpUser> findFindHelpUserByEmail(List<String> emailId);
+
 }
 

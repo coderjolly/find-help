@@ -56,6 +56,9 @@ public class ManagerController {
         return ResponseEntity.ok(allUsers);
     }
 
+
+
+
     @RequestMapping(value = "/updateUser", method = RequestMethod.PUT)
     public ResponseEntity<?> updateUser(@RequestParam String userId,@RequestParam String status) throws Exception {
         try {
