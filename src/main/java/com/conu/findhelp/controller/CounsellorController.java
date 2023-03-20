@@ -1,5 +1,6 @@
 package com.conu.findhelp.controller;
 
+import com.conu.findhelp.dto.AddPatientCommentRequest;
 import com.conu.findhelp.dto.UpdatePatientRequest;
 import com.conu.findhelp.enums.STATUS;
 import com.conu.findhelp.models.ApiResponse;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -58,13 +58,22 @@ public class CounsellorController {
                 }
                 if(updatePatientRequest.getStatus().equals("ASSIGN_DOCTOR")){
                     assignDoctor(currentUser);
+                    currentUser.setCounsellingComment(updatePatientRequest.getReason());
+                    currentUser.setCounsellingDone(true);
+                    userRepository.save(currentUser);
+                    return ResponseEntity.status(200).body(new ApiResponse(200, false, "Doctor Assigned Successfully."));
                 }
-                currentUser.setCounsellingResult(updatePatientRequest.getReason());
-                currentUser.setCounsellingDone(true);
-                userRepository.save(currentUser);
-                return ResponseEntity.status(200).body(new ApiResponse(200, false, "Patient counselling done successfully"));
+                else if(updatePatientRequest.getStatus().equals("REJECT_PATIENT")) {
+                    currentUser.setCounsellingComment(updatePatientRequest.getReason());
+                    currentUser.setCounsellingDone(true);
+                    currentUser.setAssessmentTaken(false);
+                    currentUser.setAssessmentOptionsSelected(null);
+                    userRepository.save(currentUser);
+                    return ResponseEntity.status(200).body(new ApiResponse(200, false, "Patient Rejected Successfully."));
+                }
+                return ResponseEntity.status(200).body(new ApiResponse(400, false, "Invalid Operation on Patient."));
             } else {
-                return ResponseEntity.status(400).body(new ApiResponse(400, true, "User you are trying to updated Doesn't Exist"));
+                return ResponseEntity.status(400).body(new ApiResponse(400, true, "User you are trying to update Doesn't Exist"));
             }
         } catch (Exception ex) {
             return ResponseEntity.status(500).body(new ApiResponse(500, true, "Internal Server Error"));
@@ -87,6 +96,41 @@ public class CounsellorController {
         userRepository.save(currentUser);
     }
 
+
+    @RequestMapping(value = "/addPatientComment", method = RequestMethod.POST)
+    public ResponseEntity<?> addComment(@RequestBody AddPatientCommentRequest addPatientCommentRequest ) throws Exception {
+        try {
+            FindHelpUser currentUser = userRepository.findUserByUsername(addPatientCommentRequest.getEmail());
+            if (null != currentUser) {
+                if(currentUser.isCounsellingDone()) {
+                    return ResponseEntity.status(400).body(new ApiResponse(400, true, "Patient Counselling Already Done."));
+                }
+                currentUser.setCounsellingComment(currentUser.getCounsellingComment() != null  ?  currentUser.getCounsellingComment() + "," + addPatientCommentRequest.getComment() : addPatientCommentRequest.getComment()) ;
+                userRepository.save(currentUser);
+                return ResponseEntity.status(200).body(new ApiResponse(200, false, "Patient counselling self assessment comment added successfully."));
+            } else {
+                return ResponseEntity.status(400).body(new ApiResponse(400, true, "User you are trying to update Doesn't Exist"));
+            }
+        } catch (Exception ex) {
+            return ResponseEntity.status(500).body(new ApiResponse(500, true, "Internal Server Error"));
+        }
+    }
+
+    @RequestMapping(value = "/markCounsellingDone", method = RequestMethod.POST)
+    public ResponseEntity<?> markCounsellingDone(@RequestParam String patientEmail) throws Exception {
+        try {
+            FindHelpUser currentUser = userRepository.findUserByUsername(patientEmail);
+            if (null != currentUser) {
+                currentUser.setCounsellingDone(true);
+                userRepository.save(currentUser);
+                return ResponseEntity.status(200).body(new ApiResponse(200, false, "Patient Counselling Done Successfully"));
+            } else {
+                return ResponseEntity.status(400).body(new ApiResponse(400, true, "User you are trying to update Doesn't Exist"));
+            }
+        } catch (Exception ex) {
+            return ResponseEntity.status(500).body(new ApiResponse(500, true, "Internal Server Error"));
+        }
+    }
 
 
 

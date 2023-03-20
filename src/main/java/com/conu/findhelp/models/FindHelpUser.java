@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -34,9 +33,7 @@ public class FindHelpUser {
     private String registrationNo;
     private STATUS status;
 
-    private boolean isAssessmentTaken;
-
-    private boolean isCounsellingDone;
+    private boolean assessmentTaken;
 
     private List<String> assessmentOptionsSelected;
 
@@ -52,7 +49,15 @@ public class FindHelpUser {
 
     private String doctorAssigned;
 
-    private String counsellingResult;
+    private boolean counsellingDone;
+
+    private String counsellingComment;
+
+    private boolean doctoringDone;
+
+    private String doctorComment;
+
+    private Date creationDate;
 
     public FindHelpUser(String email, String password, String name, String dob, String phone, String address, String role) {
         this.email = email;
@@ -63,6 +68,7 @@ public class FindHelpUser {
         this.address = address;
         this.status = STATUS.VERIFIED;
         this.role = role;
+        this.creationDate = new Date();
     }
 
     public FindHelpUser(String email, String password, String name, String dob, String phone, String address, String registrationNo, String role) {
@@ -75,5 +81,27 @@ public class FindHelpUser {
         this.registrationNo = registrationNo;
         this.status = STATUS.PENDING;
         this.role = role;
+        this.creationDate = new Date();
+    }
+
+    @Override
+    public String toString() {
+        return
+                id + ","
+                        + email +
+                        "," + role +
+                        ", " + name +
+                        ", " + address +
+                        ", " + dob +
+                        ", " + phone +
+                        ", " + status +
+                        ", " + assessmentTaken +
+                        ", " + counsellingDone +
+                        ", " + doctoringDone +
+                        ", " + counsellorAssigned +
+                        ", " + doctorAssigned +
+                        ", " + counsellingComment +
+                        ", " + doctorComment +
+                        ", " + creationDate;
     }
 }

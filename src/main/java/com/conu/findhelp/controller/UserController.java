@@ -1,5 +1,6 @@
 package com.conu.findhelp.controller;
 
+import com.conu.findhelp.dto.ResetUserRequest;
 import com.conu.findhelp.dto.UserResponse;
 import com.conu.findhelp.enums.STATUS;
 import com.conu.findhelp.exceptions.UserAlreadyExistsException;
@@ -61,7 +62,6 @@ public class UserController {
             final UserDetails userDetails = userDetailsService
                     .loadUserByUsername(loginRequest.getEmail());
             final String token = jwtTokenUtil.generateToken(userDetails,loginRequest.getRole());
-            currentUser.setPassword(null);
             UserResponse user = new UserResponse(currentUser,token);
             return ResponseEntity.ok(user);
         }
@@ -92,6 +92,39 @@ public class UserController {
         }
     }
 
+
+    @RequestMapping(value = "/editProfile", method = RequestMethod.POST)
+    public ResponseEntity<?> editProfile(@RequestBody FindHelpUser signupUserRequest) throws Exception {
+        try {
+            FindHelpUser currentUser = userDetailsService.getUser(signupUserRequest.getEmail());
+            if(null != currentUser) {
+                userRepository.save(signupUserRequest);
+                return ResponseEntity.status(200).body(new ApiResponse(200,false,"User Profile Updated Successfully."));
+            } else {
+                return ResponseEntity.status(400).body(new ApiResponse(400,true,"User Doesn't Exist."));
+            }
+        }
+        catch (Exception ex) {
+            return ResponseEntity.status(500).body(new ApiResponse(500,true,"Internal Server Error."));
+        }
+    }
+
+    @RequestMapping(value = "/fetchProfile", method = RequestMethod.POST)
+    public ResponseEntity<?> fetchProfile(@RequestParam String userEmail) throws Exception {
+        try {
+            FindHelpUser currentUser = userDetailsService.getUser(userEmail);
+            if(null != currentUser) {
+                UserResponse user = new UserResponse(currentUser,null);
+                return ResponseEntity.ok(user);
+            } else {
+                return ResponseEntity.status(400).body(new ApiResponse(400,true,"User Doesn't Exist."));
+            }
+        }
+        catch (Exception ex) {
+            return ResponseEntity.status(500).body(new ApiResponse(500,true,"Internal Server Error"));
+        }
+    }
+
     @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
     public ResponseEntity<?> forgotPassword(@RequestParam String email) throws Exception {
         try {
@@ -115,7 +148,7 @@ public class UserController {
             }
         }
         catch (Exception ex) {
-            return ResponseEntity.status(500).body(new ApiResponse(500,true,"Error in sending email. "+ex.getMessage()));
+            return ResponseEntity.status(500).body(new ApiResponse(500,true,"Error in Sending OTP."+ex.getMessage()));
         }
     }
 
@@ -147,9 +180,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
-    public ResponseEntity<?> resetPassword(@RequestParam String email,@RequestParam String otp,@RequestParam String newPassword) throws Exception {
+    public ResponseEntity<?> resetPassword(@RequestBody ResetUserRequest resetUserRequest) throws Exception {
         try {
-            FindHelpUser currentUser = userDetailsService.getUser(email);
+            FindHelpUser currentUser = userDetailsService.getUser(resetUserRequest.getEmail());
             if(null != currentUser) {
                 Date currentDate = new Date();
                 if(currentDate.compareTo(currentUser.getOtpExpiryDate())> 0) {
@@ -157,8 +190,8 @@ public class UserController {
                 } else if(currentUser.getVerificationAttempts()==0) {
                     return ResponseEntity.status(400).body(new ApiResponse(400,true,"Verification Attempts Finished"));
                 }
-                if(otp.equals(currentUser.getOTP())) {
-                    currentUser.setPassword(passwordEncoder.encode(newPassword));
+                if(resetUserRequest.getOtp().equals(currentUser.getOTP())) {
+                    currentUser.setPassword(passwordEncoder.encode(resetUserRequest.getNewPassword()));
                     userRepository.save(currentUser);
                     return ResponseEntity.status(200).body(new ApiResponse(200,false,"Password Reset Successful. Kindly Login."));
                 } else {

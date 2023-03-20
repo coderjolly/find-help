@@ -7,7 +7,12 @@ import com.conu.findhelp.helpers.EmailService;
 import com.conu.findhelp.models.ApiResponse;
 import com.conu.findhelp.models.FindHelpUser;
 import com.conu.findhelp.repositories.UserRepository;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +22,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,6 +95,61 @@ public class ManagerController {
         } catch (Exception ex) {
             return ResponseEntity.status(500).body(new ApiResponse(500, true, "Cannot Update User Status" + ex.getMessage()));
         }
+    }
+
+    @RequestMapping(value = "/exportUsers", method = RequestMethod.POST)
+    public ResponseEntity<?> exportUsers(@RequestParam String startDate,@RequestParam String endDate) throws Exception {
+        List<FindHelpUser>  patients = userRepository.findFindHelpUserByRole("ROLE_PATIENT");
+
+        ByteArrayInputStream byteArrayOutputStream;
+
+
+        String[] csvHeader = {
+                "id", "email", "role","name","address","dob","phone number","status","assessment taken","counselling done","doctor counselling done","counsellor assigned","doctor assigned","counselling result","doctor counselling result","creation date"
+        };
+
+        // closing resources by using a try with resources
+        // https://www.baeldung.com/java-try-with-resources
+        try (
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                // defining the CSV printer
+                CSVPrinter csvPrinter = new CSVPrinter(
+                        new PrintWriter(out),
+                        // withHeader is optional
+                        CSVFormat.DEFAULT.withHeader(csvHeader)
+                );
+        ) {
+            // populating the CSV content
+            for (FindHelpUser patient : patients)
+            {
+                String [] values= patient.toString().split(",");
+                csvPrinter.printRecord(values);
+            }
+
+
+            // writing the underlying stream
+            csvPrinter.flush();
+
+            byteArrayOutputStream = new ByteArrayInputStream(out.toByteArray());
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        InputStreamResource fileInputStream = new InputStreamResource(byteArrayOutputStream);
+
+        String csvFileName = "patients.csv";
+
+        // setting HTTP headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + csvFileName);
+        // defining the custom Content-Type
+        headers.set(HttpHeaders.CONTENT_TYPE, "text/csv");
+
+        return new ResponseEntity<>(
+                fileInputStream,
+                headers,
+                HttpStatus.OK
+        );
     }
 
 }

@@ -51,7 +51,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         if(null == user) {
             if(signupUserRequest.getRole().equals("ROLE_PATIENT")){
                 user = new FindHelpUser(signupUserRequest.getEmail(),passwordEncoder.encode(signupUserRequest.getPassword()),signupUserRequest.getName(),signupUserRequest.getDob(),signupUserRequest.getPhone(),signupUserRequest.getAddress(),signupUserRequest.getRole());
-            } else if(signupUserRequest.getRole().equals("ROLE_DOCTOR") || signupUserRequest.getRole().equals("ROLE_COUNSELLOR")) {
+            } else if(signupUserRequest.getRole().equals("ROLE_DOCTOR") || signupUserRequest.getRole().equals("ROLE_COUNSELLOR") ) {
                 user = new FindHelpUser(signupUserRequest.getEmail(),passwordEncoder.encode(signupUserRequest.getPassword()),signupUserRequest.getName(),signupUserRequest.getDob(),signupUserRequest.getPhone(),signupUserRequest.getAddress(),signupUserRequest.getRegistrationNo(),signupUserRequest.getRole());
             } else  {
                 throw new Exception("Undetermined Role Coming Up");
