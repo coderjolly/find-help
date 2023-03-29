@@ -97,6 +97,16 @@ public class ManagerController {
         }
     }
 
+
+
+//    @RequestMapping(value = "/getMetrics", method = RequestMethod.POST)
+//    public ResponseEntity<?> getMetrics(@RequestParam String startDate,@RequestParam String endDate) throws Exception {
+//        String countForADay =  userRepository.getPatientsBetweenDate(startDate,endDate).size();
+//        String countForADay =  userRepository.getPatientsBetweenDate(startDate,endDate).size();
+//        String countForADay =  userRepository.getPatientsBetweenDate(startDate,endDate).size();
+//
+//    }
+
     @RequestMapping(value = "/exportUsers", method = RequestMethod.POST)
     public ResponseEntity<?> exportUsers(@RequestParam String startDate,@RequestParam String endDate) throws Exception {
         List<FindHelpUser>  patients = userRepository.findFindHelpUserByRole("ROLE_PATIENT");

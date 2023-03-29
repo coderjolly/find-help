@@ -1,6 +1,7 @@
 package com.conu.findhelp.models;
 
 
+import com.conu.findhelp.dto.Slot;
 import com.conu.findhelp.enums.STATUS;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +12,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Document("manager")
@@ -58,6 +60,10 @@ public class FindHelpUser {
     private String doctorComment;
 
     private Date creationDate;
+
+    private String googleMeetLink;
+
+    private HashMap<String,List<Slot>> appointments = new HashMap<>();
 
     public FindHelpUser(String email, String password, String name, String dob, String phone, String address, String role) {
         this.email = email;

@@ -28,5 +28,10 @@ public interface UserRepository extends MongoRepository<FindHelpUser, String> {
     @Query("{'email' : { $in : ?0}}")
     List<FindHelpUser> findFindHelpUserByEmail(List<String> emailId);
 
+
+    @Query("{'date' : { $gte: ?0, $lte: ?1 } }")
+    List<FindHelpUser> getPatientsBetweenDate(String startDate,String endDate);
+
+
 }
 

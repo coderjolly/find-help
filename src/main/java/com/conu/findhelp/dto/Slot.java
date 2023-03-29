@@ -1,20 +1,29 @@
 package com.conu.findhelp.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
 @Data
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdatePatientRequest {
-    String counsellorEmail;
-    String patientEmail;
+public class Slot {
+
+    String slotTime;
+
+    String name;
+
     String status;
-    String reason;
-    String doctorEmail;
+
+    String slotAssignedBy;
+
+    String slotAssignedTo;
+
+    String type;
 }
