@@ -18,4 +18,5 @@ public class UpdateSlotRequest {
     String date;
     String assignedBy;
     String status;
+    String timeSlot;
 }

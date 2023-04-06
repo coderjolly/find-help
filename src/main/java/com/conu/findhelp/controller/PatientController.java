@@ -114,7 +114,7 @@ public class PatientController {
                 List<Slot> currentSlots = appointments.get(updateSlotRequest.getDate());
                 List<Slot> newSlots = new ArrayList<>();
                 for(Slot slot:currentSlots) {
-                    if(slot.getSlotAssignedBy().equals(updateSlotRequest.getAssignedBy())) {
+                    if(slot.getSlotAssignedBy().equals(updateSlotRequest.getAssignedBy()) && slot.getSlotTime().equals(updateSlotRequest.getTimeSlot())) {
                         if(updateSlotRequest.getStatus().equals("ACCEPTED")) {
                emailService.sendSimpleMail(slot.getSlotAssignedBy(),"Appointment Update","Patient : "+ patient.getName()+ " (" + patientEmail +") has accepted the appointment."  );
                         slot.setStatus("ACCEPTED");
@@ -126,7 +126,7 @@ public class PatientController {
                         List<Slot> counsellorOrDoctorSlots =  counsellorOrDoctor.getAppointments().get(updateSlotRequest.getDate());
                         List<Slot>  newSlotsForCounsellor = new ArrayList<>();
                         for(Slot currSlot:counsellorOrDoctorSlots) {
-                            if(null!=currSlot.getSlotAssignedTo() && currSlot.getSlotAssignedTo().equals(patientEmail)) {
+                            if(null!=currSlot.getSlotAssignedTo() && currSlot.getSlotAssignedTo().equals(patientEmail) && currSlot.getSlotTime().equals(updateSlotRequest.getTimeSlot())) {
                                 currSlot.setStatus(updateSlotRequest.getStatus());
                             }
                             newSlotsForCounsellor.add(currSlot);
