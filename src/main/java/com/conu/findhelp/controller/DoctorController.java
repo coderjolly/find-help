@@ -73,6 +73,11 @@ public class DoctorController {
                     userRepository.save(patient);
                     return ResponseEntity.status(200).body(new ApiResponse(200, false, "Patient Rejected Successfully."));
                 } else if(updatePatientRequest.getStatus().equals("SELF_ASSIGN")) {
+                    FindHelpUser doctor = userRepository.findUserByUsername(updatePatientRequest.getDoctorEmail());
+                    List<String> patientQueue  = doctor.getPatientQueue();
+                    patientQueue.remove(updatePatientRequest.getPatientEmail());
+                    doctor.setPatientQueue(patientQueue);
+                    userRepository.save(doctor);
                     patient.setDoctorComment(patient.getDoctorComment() != null  ?  patient.getDoctorComment() + "," + updatePatientRequest.getReason() : updatePatientRequest.getReason()); ;
                     userRepository.save(patient);
                     return ResponseEntity.status(200).body(new ApiResponse(200, false, "Doctor Comment Added Successfully."));
@@ -180,9 +185,11 @@ public class DoctorController {
                     List<Slot> patientsSlotForDate = patientAppointments.get(date);
                     Slot patientSlot = new Slot(slotTime,doctor.getName(),"ASSIGNED",doctorEmail,null,"DOCTOR");
                     patientsSlotForDate.add(patientSlot);
+                    patientAppointments.put(date,patientsSlotForDate);
                 } else {
                     List<Slot> patientsSlotForDate = new ArrayList<>();
                     Slot patientSlot = new Slot(slotTime,doctor.getName(),"ASSIGNED",doctorEmail,null,"DOCTOR");
+                    patientsSlotForDate.add(patientSlot);
                     patientAppointments.put(date,patientsSlotForDate);
                 }
                 patient.setAppointments(patientAppointments);

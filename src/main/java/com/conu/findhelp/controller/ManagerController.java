@@ -26,7 +26,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -99,17 +101,19 @@ public class ManagerController {
 
 
 
-//    @RequestMapping(value = "/getMetrics", method = RequestMethod.POST)
-//    public ResponseEntity<?> getMetrics(@RequestParam String startDate,@RequestParam String endDate) throws Exception {
-//        String countForADay =  userRepository.getPatientsBetweenDate(startDate,endDate).size();
-//        String countForADay =  userRepository.getPatientsBetweenDate(startDate,endDate).size();
-//        String countForADay =  userRepository.getPatientsBetweenDate(startDate,endDate).size();
-//
+//    @RequestMapping(value = "/getCount", method = RequestMethod.POST)
+//    public ResponseEntity<?> getCount(@RequestParam String startDate,@RequestParam String endDate) throws Exception {
+//        return userRepository.getPatientsBetweenDate(startDate,endDate).size();
 //    }
 
     @RequestMapping(value = "/exportUsers", method = RequestMethod.POST)
     public ResponseEntity<?> exportUsers(@RequestParam String startDate,@RequestParam String endDate) throws Exception {
-        List<FindHelpUser>  patients = userRepository.findFindHelpUserByRole("ROLE_PATIENT");
+
+        Date startD = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+        Date endD = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+
+
+        List<FindHelpUser>  patients = userRepository.getPatientsBetweenDate(startD,endD,"ROLE_PATIENT");
 
         ByteArrayInputStream byteArrayOutputStream;
 

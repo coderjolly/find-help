@@ -82,7 +82,7 @@ public class CounsellorController {
     @RequestMapping(value = "/updatePatientStatus", method = RequestMethod.POST)
     public ResponseEntity<?> getAllUsers(@RequestBody UpdatePatientRequest updatePatientRequest) throws Exception {
         try {
-            FindHelpUser patient = userRepository.findUserByUsername(updatePatientRequest.getCounsellorEmail());
+            FindHelpUser patient = userRepository.findUserByUsername(updatePatientRequest.getPatientEmail());
             if (null != patient) {
                 if(patient.isCounsellingDone()) {
                     return ResponseEntity.status(400).body(new ApiResponse(400, true, "Patient counselling already done."));
@@ -113,6 +113,11 @@ public class CounsellorController {
                     return ResponseEntity.status(200).body(new ApiResponse(200, false, "Patient Rejected Successfully."));
                 }
                 else if(updatePatientRequest.getStatus().equals("SELF_ASSIGN")) {
+                    FindHelpUser counsellor = userRepository.findUserByUsername(updatePatientRequest.getCounsellorEmail());
+                    List<String> patientQueue  = counsellor.getPatientQueue();
+                    patientQueue.remove(updatePatientRequest.getPatientEmail());
+                    counsellor.setPatientQueue(patientQueue);
+                    userRepository.save(counsellor);
                     patient.setCounsellingComment(patient.getCounsellingComment() != null  ?  patient.getCounsellingComment() + "," + updatePatientRequest.getReason() : updatePatientRequest.getReason()) ;
                     userRepository.save(patient);
                     return ResponseEntity.status(200).body(new ApiResponse(200, false, "Patient Comment Added Successfully."));

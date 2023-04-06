@@ -75,6 +75,7 @@ public class FindHelpUser {
         this.status = STATUS.VERIFIED;
         this.role = role;
         this.creationDate = new Date();
+
     }
 
     public FindHelpUser(String email, String password, String name, String dob, String phone, String address, String registrationNo, String role) {

@@ -5,6 +5,7 @@ import com.conu.findhelp.models.FindHelpUser;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 public interface UserRepository extends MongoRepository<FindHelpUser, String> {
@@ -29,8 +30,8 @@ public interface UserRepository extends MongoRepository<FindHelpUser, String> {
     List<FindHelpUser> findFindHelpUserByEmail(List<String> emailId);
 
 
-    @Query("{'date' : { $gte: ?0, $lte: ?1 } }")
-    List<FindHelpUser> getPatientsBetweenDate(String startDate,String endDate);
+    @Query("{'creationDate' : { $gte: ?0, $lte: ?1 }, role: '?2' }")
+    List<FindHelpUser> getPatientsBetweenDate(Date startDate, Date endDate, String role);
 
 
 }
