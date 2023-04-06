@@ -163,6 +163,8 @@ public class DoctorController {
     public ResponseEntity<?> assignSlot(@RequestParam String doctorEmail, @RequestParam String patientEmail, @RequestParam String date , @RequestParam String slotTime ) throws Exception {
         try {
             FindHelpUser doctor = userRepository.findUserByUsername(doctorEmail);
+            FindHelpUser patient = userRepository.findUserByUsername(patientEmail);
+
             if (null != doctor) {
                 HashMap<String,List<Slot>> appointments =    doctor.getAppointments();
                 List<Slot> slots = appointments.get(date);
@@ -170,7 +172,7 @@ public class DoctorController {
                 for(Slot currSlot:slots) {
                     if(currSlot.getSlotTime().equals(slotTime)) {
                         currSlot.setSlotAssignedTo(patientEmail);
-                        currSlot.setName(doctor.getName());
+                        currSlot.setName(patient.getName());
                         currSlot.setStatus("ASSIGNED");
                     }
                     finalSlots.add(currSlot);
@@ -179,7 +181,6 @@ public class DoctorController {
                 doctor.setAppointments(appointments);
                 userRepository.save(doctor);
 
-                FindHelpUser patient = userRepository.findUserByUsername(patientEmail);
                 HashMap<String,List<Slot>> patientAppointments = patient.getAppointments();
                 if(patientAppointments.containsKey(date)) {
                     List<Slot> patientsSlotForDate = patientAppointments.get(date);
