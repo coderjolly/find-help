@@ -26,4 +26,6 @@ public class Slot {
     String slotAssignedTo;
 
     String type;
+
+    String meetingLink;
 }

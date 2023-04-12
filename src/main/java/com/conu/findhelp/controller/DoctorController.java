@@ -71,6 +71,7 @@ public class DoctorController {
                     doctor.setPatientQueue(patientQueue);
                     userRepository.save(doctor);
                     userRepository.save(patient);
+                    emailService.sendSimpleMail(patient.getEmail(), "Assessment Update","Thank you for filling out the self-assessment form. Based on our analysis, we have determined that your condition does not require medical treatment at this time. We recommend that you continue to monitor your symptoms and reach out to us if you experience any changes or if your condition worsens. If you have any questions or concerns, please don't hesitate to contact us. Regards, "+ doctor.getName());
                     return ResponseEntity.status(200).body(new ApiResponse(200, false, "Patient Rejected Successfully."));
                 } else if(updatePatientRequest.getStatus().equals("SELF_ASSIGN")) {
                     FindHelpUser doctor = userRepository.findUserByUsername(updatePatientRequest.getDoctorEmail());
@@ -142,7 +143,7 @@ public class DoctorController {
                     String [] slotsTime = new String[]{"12:00-13:00","13:00-14:00","14:00-15:00","15:00-16:00","16:00-17:00","17:00-18:00"};
                     List<Slot> slots = new ArrayList<>();
                     for(String slottime:slotsTime) {
-                        slots.add(new Slot(slottime,null,null,null,null,null));
+                        slots.add(new Slot(slottime,null,null,null,null,null,null));
                     }
                     appointments.put(date,slots);
                     List<String> finalSlots = slots.stream().filter(slot-> Objects.isNull(slot.getSlotAssignedTo())).map(e-> e.getSlotTime()).collect(Collectors.toList());
@@ -174,6 +175,7 @@ public class DoctorController {
                         currSlot.setSlotAssignedTo(patientEmail);
                         currSlot.setName(patient.getName());
                         currSlot.setStatus("ASSIGNED");
+                        currSlot.setMeetingLink(doctor.getGoogleMeetLink());
                     }
                     finalSlots.add(currSlot);
                 }
@@ -184,12 +186,12 @@ public class DoctorController {
                 HashMap<String,List<Slot>> patientAppointments = patient.getAppointments();
                 if(patientAppointments.containsKey(date)) {
                     List<Slot> patientsSlotForDate = patientAppointments.get(date);
-                    Slot patientSlot = new Slot(slotTime,doctor.getName(),"ASSIGNED",doctorEmail,null,"DOCTOR");
+                    Slot patientSlot = new Slot(slotTime,doctor.getName(),"ASSIGNED",doctorEmail,null,"DOCTOR",doctor.getGoogleMeetLink());
                     patientsSlotForDate.add(patientSlot);
                     patientAppointments.put(date,patientsSlotForDate);
                 } else {
                     List<Slot> patientsSlotForDate = new ArrayList<>();
-                    Slot patientSlot = new Slot(slotTime,doctor.getName(),"ASSIGNED",doctorEmail,null,"DOCTOR");
+                    Slot patientSlot = new Slot(slotTime,doctor.getName(),"ASSIGNED",doctorEmail,null,"DOCTOR",doctor.getGoogleMeetLink());
                     patientsSlotForDate.add(patientSlot);
                     patientAppointments.put(date,patientsSlotForDate);
                 }
