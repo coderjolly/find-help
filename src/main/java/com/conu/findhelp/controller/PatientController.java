@@ -116,10 +116,10 @@ public class PatientController {
                 for(Slot slot:currentSlots) {
                     if(slot.getSlotAssignedBy().equals(updateSlotRequest.getAssignedBy()) && slot.getSlotTime().equals(updateSlotRequest.getTimeSlot())) {
                         if(updateSlotRequest.getStatus().equals("ACCEPTED")) {
-               emailService.sendSimpleMail(slot.getSlotAssignedBy(),"Appointment Update","Patient : "+ patient.getName()+ " (" + patientEmail +") has accepted the appointment."  );
+               emailService.sendSimpleMail(slot.getSlotAssignedBy(),"Appointment Update","Patient : "+ patient.getName()+ " (" + patientEmail +") has accepted the appointment. Regards, We Care."  );
                         slot.setStatus("ACCEPTED");
                         } else if(updateSlotRequest.getStatus().equals("REJECTED")) {
-          emailService.sendSimpleMail(slot.getSlotAssignedBy(),"Appointment Update","Patient : "+ patient.getName()+ " (" + patientEmail +") has rejected the appointment. Kindly schedule new appointment."  );
+          emailService.sendSimpleMail(slot.getSlotAssignedBy(),"Appointment Update","Patient : "+ patient.getName()+ " (" + patientEmail +") has rejected the appointment. Kindly schedule new appointment. Regards, We Care."  );
                             slot.setStatus("REJECTED");
                         }
                         FindHelpUser counsellorOrDoctor = userRepository.findUserByUsername(slot.getSlotAssignedBy());

@@ -71,7 +71,7 @@ public class DoctorController {
                     doctor.setPatientQueue(patientQueue);
                     userRepository.save(doctor);
                     userRepository.save(patient);
-                    emailService.sendSimpleMail(patient.getEmail(), "Assessment Update","Thank you for filling out the self-assessment form. Based on our analysis, we have determined that your condition does not require medical treatment at this time. We recommend that you continue to monitor your symptoms and reach out to us if you experience any changes or if your condition worsens. If you have any questions or concerns, please don't hesitate to contact us. Regards, "+ doctor.getName());
+                    emailService.sendSimpleMail(patient.getEmail(), "Assessment Update","Thank you for filling out the self-assessment form. Based on our analysis, we have determined that your condition does not require medical treatment at this time. We recommend that you continue to monitor your symptoms and reach out to us if you experience any changes or if your condition worsens. If you have any questions or concerns, please don't hesitate to contact us. Regards, "+ doctor.getName()+ " (Doctor). Regards, We Care.");
                     return ResponseEntity.status(200).body(new ApiResponse(200, false, "Patient Rejected Successfully."));
                 } else if(updatePatientRequest.getStatus().equals("SELF_ASSIGN")) {
                     FindHelpUser doctor = userRepository.findUserByUsername(updatePatientRequest.getDoctorEmail());
@@ -197,7 +197,7 @@ public class DoctorController {
                 }
                 patient.setAppointments(patientAppointments);
                 userRepository.save(patient);
-                emailService.sendSimpleMail(patientEmail,"Appointment Scheduled","You appointment is scheduled for date: "+date + " "+ slotTime);
+                emailService.sendSimpleMail(patientEmail,"Appointment Scheduled","You appointment is scheduled for date: "+date + " at slot time "+ slotTime +" by doctor "+ doctor.getName() + " Your meeting link is as follows: "+doctor.getGoogleMeetLink()+". Regards, WeCare.");
                 return ResponseEntity.status(200).body(new ApiResponse(200, false, "Appointment Sent Successfully"));
             } else {
                 return ResponseEntity.status(400).body(new ApiResponse(400, true, "User you are trying to update Doesn't Exist."));

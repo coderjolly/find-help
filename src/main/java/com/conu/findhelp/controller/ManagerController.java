@@ -79,17 +79,17 @@ public class ManagerController {
                     if (user.getRole().equals("ROLE_PATIENT")) {
                         user.setStatus(STATUS.valueOf(status));
                         userRepository.save(user);
-                        emailService.sendSimpleMail(user.getEmail(),"Status Update","You have been declined by the manager. Kindly signup again using other id.");
+                        emailService.sendSimpleMail(user.getEmail(),"Status Update","You have been declined by the manager. Kindly signup again using other id. Regards, We Care.");
                         return ResponseEntity.ok(new ApiResponse(200, false, "User Rejected from the System."));
                     } else if (user.getRole().equals("ROLE_DOCTOR") || user.getRole().equals("ROLE_COUNSELLOR")) {
                         userRepository.delete(user);
-                        emailService.sendSimpleMail(user.getEmail(),"Status Update","You have been rejected by the manager. Kindly contact the manger for the approval.");
+                        emailService.sendSimpleMail(user.getEmail(),"Status Update","You have been rejected by the manager. Kindly contact the manger for the approval. Regards, We Care.");
                         return ResponseEntity.ok(new ApiResponse(200, false, "User Rejected from the System."));
                     }
                 } else if (STATUS.VERIFIED == STATUS.valueOf(status)) {
                     user.setStatus(STATUS.valueOf(status));
                     userRepository.save(user);
-                    emailService.sendSimpleMail(user.getEmail(),"Status Update","Congratulations !!! You have accepted by the manager.");
+                    emailService.sendSimpleMail(user.getEmail(),"Status Update","Congratulations !!! You have been accepted by the manager. Regards, We Care.");
                     return ResponseEntity.ok(new ApiResponse(200, false, "User Verified Successfully"));
                 }
             }
