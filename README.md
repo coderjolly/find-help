@@ -1,4 +1,4 @@
-# SOEN 6841 (Software Engineering Team Project (50%))
+# SOEN 6841 (Software Engineering Team Project)
 
 This project will help to get a taste of software project management skills first-hand. One has to follow the Agile development approach; use supporting project management tools of their choice for tracking progress against the plan, and communicate about the progress (Jira, Asana, etc.). Because of the short span of this project, one is not expected to deliver a marketable product, but the result should be at least a compelling middle-fidelity prototype that could serve as the basis for defining a real product.
 
@@ -29,7 +29,6 @@ The following are the capabilities of each user:
 - Doctor:
     1. Registration (Full name, address, date of birth, address, phone number, email address, doctor
     registration number)
-    7
     2. List of his/her patients
     3. Self-assessment results for the assigned patients
     4. Appointments with Patients
@@ -44,7 +43,7 @@ The following are the capabilities of each user:
 
 # Credits
 
-[Harsheen Kaur](https://github.com/sheen404)
-[Rui Wang]()
-[Wenxue Zhao](https://github.com/ballista01)
-[Yang Liu]()
+[Harsheen Kaur](https://github.com/sheen404),
+[Rui Wang](https://github.com/RuiWang98), 
+[Wenxue Zhao](https://github.com/ballista01), 
+[Yang Liu](https://github.com/Liuliu-09-17)
