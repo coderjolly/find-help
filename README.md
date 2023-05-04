@@ -41,9 +41,4 @@ The following are the capabilities of each user:
     3. Add or remove a patient
     4. Report: number of patients (day, week, month)
 
-# Credits
-
-[Harsheen Kaur](https://github.com/sheen404),
-[Rui Wang](https://github.com/RuiWang98), 
-[Wenxue Zhao](https://github.com/ballista01), 
-[Yang Liu](https://github.com/Liuliu-09-17)
+[//]: <> (Credits)
