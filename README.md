@@ -12,33 +12,32 @@ The following are the capabilities of each user:
 
 - Patient:
     1. Registration (Full name, address, date of birth, address, phone number, email address)
-    2. Self-assessment, see the link down
-    3. Cancel the assessment
-    4. See the appointment with a counselor or a doctor
-    5. Accept or Cancel the appointment
+    2. Fill their self-assessment form
+    3. Cancel their self-assessment form
+    4. See their appointment with a counselor or a doctor
+    5. Accept or Cancel their appointment
 
 - Counselor:
-    1. Registration (Full name, address, date of birth, address, phone number, email address, counselor
-    registration number)
-    2. List of patients
-    3. Self-assessment results
-    4. Appointments with patients
-    5. Assigning a patient to a Dr
-    6. Rejecting a patient
+    1. Registration (Full name, address, date of birth, address, phone number, email address, counselor registration number)
+    2. List of their assigned patients
+    3. Self-assessment results of their respectivce assigned patients
+    4. Appointments with their patients
+    5. Assigning a patient to a Doctor
+    6. Rejecting an assigned patient
+    7. Modifying their appointments with the patients
 
 - Doctor:
-    1. Registration (Full name, address, date of birth, address, phone number, email address, doctor
-    registration number)
-    2. List of his/her patients
-    3. Self-assessment results for the assigned patients
-    4. Appointments with Patients
-    5. Modifying the appointments
-    6. Rejecting a patient
+    1. Registration (Full name, address, date of birth, address, phone number, email address, doctor registration number)
+    2. List of their assigned patients
+    3. Self-assessment results for their respective assigned patients
+    4. Appointments with their Patients
+    5. Rejecting an assigned patient
+    6. Modifying their appointments with the patients
 
 - Manager:
-    1. Accept or reject a doctor
-    2. Accept or reject a counselor
-    3. Add or remove a patient
-    4. Report: number of patients (day, week, month)
+    1. Accept or Reject a doctor 
+    2. Accept or Reject a counselor
+    3. Add or Remove a patient
+    4. Make Report: Number of Patients (Day, Week, Month wise)
 
 [//]: <> (Credits)
