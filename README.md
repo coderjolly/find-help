@@ -40,4 +40,14 @@ The following are the capabilities of each user:
     3. Add or Remove a patient
     4. Make Report: Number of Patients (Day, Week, Month wise)
 
-[//]: <> (Credits)
+## Preview
+
+![Home](ss/home-page.png)
+
+![Manager-Home](ss/manager-home.png)
+
+![Patient-Home](ss/patient-home.png)
+
+![Counsellor-Home](ss/counsellor-home.png)
+
+![doctor-Home](ss/doctor-home.png)
